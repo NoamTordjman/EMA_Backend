@@ -24,6 +24,9 @@ public class User {
     @Column(name="mail")
     private String mail;
 
+    public User() {
+    }
+
     public User(UUID id_user, String name, String surname, String mail) {
         this.id_user = id_user;
         this.name = name;

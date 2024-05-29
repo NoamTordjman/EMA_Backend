@@ -6,19 +6,42 @@ import com.example.demo.DTO.EventDTOUpdate;
 import com.example.demo.Event;
 import com.example.demo.Services.EventServices;
 import jdk.jfr.Category;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class EventController {
 
-    private final EventServices service;
+    private final EventServices event;
 
-    public EventController(EventServices service) {
-        this.service = service;
+    @Autowired
+    public EventController(EventServices event) {
+        this.event = event;
     }
 
+    @GetMapping
+    public List<Event> getAllEvents() {
+        return event.getAllEvents();
+    }
 
+    @PostMapping
+    public Event CreateEvent(@RequestBody EventDTOCreate EventDTOCreate) {
+        return event.CreateEvent(EventDTOCreate);
+    }
 
-}
+    @PutMapping("/{id}")
+    public Event UpdateEvent(@PathVariable UUID id,@RequestBody EventDTOUpdate EventDTOUpdate) {
+        return event.updateEvent(EventDTOUpdate);
+    }
+
+    @DeleteMapping
+    public void DeleteEvent(@PathVariable UUID id) {
+        event.deleteEvent(id);
+    }
+
+    }

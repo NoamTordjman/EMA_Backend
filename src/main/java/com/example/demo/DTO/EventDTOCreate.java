@@ -19,6 +19,16 @@ public class EventDTOCreate {
         this.title = title;
     }
 
+    public EventDTOCreate(String title, String description, LocalDate dateBegining, EventStatus eventStatus, LocalTime duration, String location, UUID idCreator) {
+        this.title = title;
+        this.description = description;
+        this.dateBegining = dateBegining;
+        this.eventStatus = eventStatus;
+        this.duration = duration;
+        this.location = location;
+        this.idCreator = idCreator;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }

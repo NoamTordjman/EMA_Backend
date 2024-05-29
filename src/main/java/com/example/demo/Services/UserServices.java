@@ -1,10 +1,7 @@
 package com.example.demo.Services;
 
-import com.example.demo.DTO.EventDTOCreate;
-import com.example.demo.DTO.EventDTOUpdate;
 import com.example.demo.DTO.UserDTOCreate;
 import com.example.demo.DTO.UserDTOUpdate;
-import com.example.demo.Event;
 import com.example.demo.User;
 
 import java.util.List;
@@ -16,5 +13,5 @@ public interface UserServices {
     void deleteUser(UUID idUser);
     User updateUser(UserDTOUpdate user);
     List<User> getAllUsers();
-    Event getUserById(UUID idUser);
+    User getUserById(UUID idUser);
 }
