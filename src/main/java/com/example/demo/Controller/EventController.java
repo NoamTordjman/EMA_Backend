@@ -36,7 +36,7 @@ public class EventController {
 
     @PutMapping("/{id}")
     public Event UpdateEvent(@PathVariable UUID id,@RequestBody EventDTOUpdate EventDTOUpdate) {
-        return event.updateEvent(EventDTOUpdate);
+        return event.updateEvent(id,EventDTOUpdate);
     }
 
     @DeleteMapping

@@ -11,7 +11,7 @@ public interface EventServices {
 
     Event CreateEvent(EventDTOCreate Event);
     void deleteEvent(UUID idEvent);
-    Event updateEvent(EventDTOUpdate Event);
+    Event updateEvent(UUID EventID, EventDTOUpdate Event);
     List<Event> getAllEvents();
     Event getEventById(UUID idEvent);
 }

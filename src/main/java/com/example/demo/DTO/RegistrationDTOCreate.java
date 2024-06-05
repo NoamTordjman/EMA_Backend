@@ -4,6 +4,12 @@ import java.util.UUID;
 
 public class RegistrationDTOCreate {
     private UUID userId;
+    private UUID eventId;
+
+    public RegistrationDTOCreate(UUID userId, UUID eventId) {
+        this.userId = userId;
+        this.eventId = eventId;
+    }
 
     public void setUserId(UUID userId) {
         this.userId = userId;
@@ -21,5 +27,4 @@ public class RegistrationDTOCreate {
         return eventId;
     }
 
-    private UUID eventId;
 }

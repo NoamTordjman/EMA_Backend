@@ -5,7 +5,13 @@ import java.util.UUID;
 public class FeedbackDTOCreate {
     private UUID RegistrationId;
     private int rating;
-    private String comments;
+    private String description;
+
+    public FeedbackDTOCreate(UUID registrationId, int rating, String description) {
+        RegistrationId = registrationId;
+        this.rating = rating;
+        this.description = description;
+    }
 
     public void setRegistrationId(UUID registrationId) {
         RegistrationId = registrationId;
@@ -15,8 +21,8 @@ public class FeedbackDTOCreate {
         this.rating = rating;
     }
 
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public UUID getRegistrationId() {
@@ -27,7 +33,7 @@ public class FeedbackDTOCreate {
         return rating;
     }
 
-    public String getComments() {
-        return comments;
+    public String getDescription() {
+        return description;
     }
 }

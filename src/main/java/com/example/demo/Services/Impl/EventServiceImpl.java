@@ -38,8 +38,9 @@ public class EventServiceImpl implements EventServices {
     }
 
     @Override
-    public Event updateEvent(@RequestBody EventDTOUpdate EventDTO){
-        Event event = new Event();
+    public Event updateEvent(UUID EventID, EventDTOUpdate EventDTO){
+        Event event = repository.findById(EventID).orElse(null);
+        assert event != null;
         event.setTitle(EventDTO.getTitle());
         event.setDescription(EventDTO.getDescription());
         event.setEventStatus(EventDTO.getEventStatus());
