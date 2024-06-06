@@ -4,6 +4,7 @@ import com.example.demo.DTO.FeedbackDTOCreate;
 import com.example.demo.DTO.FeedbackDTOUpdate;
 import com.example.demo.Feedback;
 import com.example.demo.Services.FeedbackServices;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +12,12 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/feedbacks")
+
+@Tag(
+        name="Feedback Controller API",
+        description = "Permit to control the Feedback"
+)
+@RequestMapping("/v1/feedbacks")
 public class FeedbackController {
 
     private final FeedbackServices feedbackService;

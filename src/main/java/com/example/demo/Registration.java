@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import com.example.demo.Enum.RegistrationStatus;
 import jakarta.persistence.*;
 
 import java.util.UUID;
@@ -22,11 +21,11 @@ public class Registration {
     private Event event;
 
     @Column(name = "status")
-    private RegistrationStatus status;
+    private String status;
 
     public Registration() {}
 
-    public Registration(UUID registration, User user, Event event, RegistrationStatus status) {
+    public Registration(UUID registration, User user, Event event, String status) {
         this.registrationID = registration;
         this.user = user;
         this.event = event;
@@ -45,7 +44,7 @@ public class Registration {
         this.event = event;
     }
 
-    public void setStatus(RegistrationStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -61,7 +60,7 @@ public class Registration {
         return event;
     }
 
-    public RegistrationStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 

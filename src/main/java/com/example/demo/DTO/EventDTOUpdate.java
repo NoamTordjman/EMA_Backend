@@ -1,15 +1,14 @@
 package com.example.demo.DTO;
-import com.example.demo.Enum.EventStatus;
-import java.time.LocalDate;
-import java.time.LocalTime;
+
+import java.time.LocalDateTime;
 
 
 public class EventDTOUpdate {
     private String title;
     private String description;
-    private LocalDate dateBegining;
-    private EventStatus eventStatus;
-    private LocalTime duration;
+    private LocalDateTime dateBegining;
+    private String eventStatus;
+    private LocalDateTime date_end;
     private String location;
 
     public void setTitle(String title) {
@@ -20,16 +19,16 @@ public class EventDTOUpdate {
         this.description = description;
     }
 
-    public void setDateBegining(LocalDate dateBegining) {
+    public void setDateBegining(LocalDateTime dateBegining) {
         this.dateBegining = dateBegining;
     }
 
-    public void setEventStatus(EventStatus eventStatus) {
+    public void setEventStatus(String eventStatus) {
         this.eventStatus = eventStatus;
     }
 
-    public void setDuration(LocalTime duration) {
-        this.duration = duration;
+    public void setDate_end(LocalDateTime date_end) {
+        this.date_end = date_end;
     }
 
     public void setLocation(String location) {
@@ -48,15 +47,15 @@ public class EventDTOUpdate {
         return location;
     }
 
-    public LocalTime getDuration() {
-        return duration;
+    public LocalDateTime getDate_end() {
+        return date_end;
     }
 
-    public LocalDate getDateBegining() {
+    public LocalDateTime getDateBegining() {
         return dateBegining;
     }
 
-    public EventStatus getEventStatus() {
+    public String getEventStatus() {
         return eventStatus;
     }
 }

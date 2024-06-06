@@ -8,6 +8,7 @@ import com.example.demo.Services.EventServices;
 import jdk.jfr.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,6 +16,11 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@Tag(
+        name="Event Controller API",
+        description = "Permit to control the Event"
+)
+@RequestMapping("/v1/Event")
 public class EventController {
 
     private final EventServices event;

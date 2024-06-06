@@ -5,6 +5,7 @@ import com.example.demo.DTO.RegistrationDTOCreate;
 import com.example.demo.Registration;
 import com.example.demo.Services.Impl.RegistrationServiceImpl;
 import com.example.demo.Services.RegistrationServices;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +13,11 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/registrations")
+@Tag(
+        name="Registration Controller API",
+        description = "Permit to control the Registration"
+)
+@RequestMapping("/v1/registrations")
 public class RegistrationController {
 
     @Autowired

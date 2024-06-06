@@ -31,7 +31,7 @@ public class EventServiceImpl implements EventServices {
         event.setDescription(EventDTO.getDescription());
         event.setEventStatus(EventDTO.getEventStatus());
         event.setDateBegining(EventDTO.getDateBegining());
-        event.setDuration(EventDTO.getDuration());
+        event.setDate_end(EventDTO.getDate_end());
         event.setIdCreator(EventDTO.getIdCreator());
         event.setLocation(EventDTO.getLocation());
         return repository.save(event);
@@ -45,7 +45,7 @@ public class EventServiceImpl implements EventServices {
         event.setDescription(EventDTO.getDescription());
         event.setEventStatus(EventDTO.getEventStatus());
         event.setDateBegining(EventDTO.getDateBegining());
-        event.setDuration(EventDTO.getDuration());
+        event.setDate_end(EventDTO.getDate_end());
         event.setLocation(EventDTO.getLocation());
         return repository.save(event);
     }

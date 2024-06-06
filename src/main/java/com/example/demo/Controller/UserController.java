@@ -7,11 +7,17 @@ import com.example.demo.DTO.UserDTOUpdate;
 import com.example.demo.Event;
 import com.example.demo.Services.UserServices;
 import com.example.demo.User;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-
+@RestController
+@Tag(
+        name="Users Controller API",
+        description = "Permit to control the Users"
+)
+@RequestMapping("/v1/Users")
 public class UserController {
 
     private final UserServices user;
