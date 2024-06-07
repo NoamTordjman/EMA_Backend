@@ -52,4 +52,10 @@ public class UserServiceImpl implements UserServices {
     public User getUserById(UUID idUser) {
         return repository.findById(idUser).orElse(null);
     }
+
+    @Override
+    public User Login(String username, String password) {
+        return repository.Login(username,password);
+    }
+
 }

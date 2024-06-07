@@ -14,4 +14,5 @@ public interface UserServices {
     User updateUser(UserDTOUpdate user);
     List<User> getAllUsers();
     User getUserById(UUID idUser);
+    User Login(String username, String password);
 }

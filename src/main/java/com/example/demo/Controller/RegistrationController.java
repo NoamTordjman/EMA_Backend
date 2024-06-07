@@ -46,4 +46,5 @@ public class RegistrationController {
     public Registration getRegistrationById(@PathVariable UUID id) {
         return registrationService.getRegistrationById(id);
     }
+
 }

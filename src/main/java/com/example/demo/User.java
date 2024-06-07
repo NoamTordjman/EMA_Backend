@@ -24,15 +24,19 @@ public class User {
     @Column(name="mail")
     private String mail;
 
+    @Column(name="password")
+    private String password;
+
 
     public User() {
     }
 
-    public User(UUID id_user, String name, String surname, String mail) {
+    public User(UUID id_user, String name, String surname, String mail, String password) {
         this.id_user = id_user;
         this.name = name;
         this.surname = surname;
         this.mail = mail;
+        this.password = password;
     }
 
     public void setId_user(UUID id_user) {
@@ -51,6 +55,9 @@ public class User {
         this.mail = mail;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
     public UUID getId_user() {
         return id_user;
     }
@@ -66,4 +73,5 @@ public class User {
     public String getMail() {
         return mail;
     }
+
 }

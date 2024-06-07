@@ -44,4 +44,9 @@ public class UserController {
     public void DeleteUser(@PathVariable UUID id) {
         user.deleteUser(id);
     }
+
+    @GetMapping("/Login/{mail}/{password}")
+    public User Log(@PathVariable String mail,@PathVariable String password){
+        return user.Login(mail,password);
+    }
 }
