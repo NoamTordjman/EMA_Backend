@@ -1,9 +1,6 @@
 package com.example.demo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.UUID;
 
@@ -12,7 +9,8 @@ import java.util.UUID;
 public class User {
 
     @Id
-    @Column(name="id_user")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id_user", columnDefinition = "UUID")
     private UUID id_user;
 
     @Column(name="name")
