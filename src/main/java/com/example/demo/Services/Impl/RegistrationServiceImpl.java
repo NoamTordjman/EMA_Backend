@@ -31,8 +31,8 @@ public class RegistrationServiceImpl implements RegistrationServices {
 
     @Override
     public Registration CreateRegistration(RegistrationDTOCreate registrationDTO) {
-         User user = UserRepository.findById(registrationDTO.getUserId()).orElse((null));
-         Event event = EventRepository.findById(registrationDTO.getEventId()).orElse((null));
+        User user = UserRepository.findById(registrationDTO.getUserId()).orElse((null));
+        Event event = EventRepository.findById(registrationDTO.getEventId()).orElse((null));
         Registration registration = new Registration();
         registration.setEvent(event);
         registration.setUser(user);

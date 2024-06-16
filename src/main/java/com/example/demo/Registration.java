@@ -9,7 +9,8 @@ import java.util.UUID;
 public class Registration {
 
     @Id
-    @Column(name = "id_registration")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id_registration", columnDefinition = "UUID")
     private UUID registrationID;
 
     @ManyToOne
@@ -20,16 +21,12 @@ public class Registration {
     @JoinColumn(name = "id_event")
     private Event event;
 
-    @Column(name = "status")
-    private String status;
-
     public Registration() {}
 
-    public Registration(UUID registration, User user, Event event, String status) {
+    public Registration(UUID registration, User user, Event event) {
         this.registrationID = registration;
         this.user = user;
         this.event = event;
-        this.status = status;
     }
 
     public void setRegistrationID(UUID registrationID) {
@@ -44,10 +41,6 @@ public class Registration {
         this.event = event;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public UUID getRegistrationID() {
         return registrationID;
     }
@@ -58,10 +51,6 @@ public class Registration {
 
     public Event getEvent() {
         return event;
-    }
-
-    public String getStatus() {
-        return status;
     }
 
 }

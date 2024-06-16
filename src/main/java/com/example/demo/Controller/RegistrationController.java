@@ -7,6 +7,7 @@ import com.example.demo.Services.Impl.RegistrationServiceImpl;
 import com.example.demo.Services.RegistrationServices;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.UUID;
         name="Registration Controller API",
         description = "Permit to control the Registration"
 )
-@RequestMapping("/v1/registrations")
+@RequestMapping("/v1/Registration")
 public class RegistrationController {
 
     @Autowired
@@ -27,9 +28,10 @@ public class RegistrationController {
         this.registrationService = registrationService;
     }
 
-    @PostMapping
-    public Registration createRegistration(@RequestBody RegistrationDTOCreate registrationDTO) {
-        return registrationService.CreateRegistration(registrationDTO);
+    @PostMapping("/Register")
+    public ResponseEntity<Registration> createRegistration(@RequestBody RegistrationDTOCreate registrationDTO) {
+        //Ajouter exeption sur la verif des 2 id ici
+        return ResponseEntity.ok(registrationService.CreateRegistration(registrationDTO));
     }
 
     @DeleteMapping("/{id}")
