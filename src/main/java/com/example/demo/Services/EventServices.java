@@ -2,6 +2,7 @@ package com.example.demo.Services;
 
 import com.example.demo.DTO.EventDTOCreate;
 import com.example.demo.DTO.EventDTOUpdate;
+import com.example.demo.DTO.EventFilterDTO;
 import com.example.demo.Event;
 
 import java.util.List;
@@ -14,4 +15,5 @@ public interface EventServices {
     Event updateEvent(UUID EventID, EventDTOUpdate Event);
     List<Event> getAllEvents();
     Event getEventById(UUID idEvent);
+    List<Event> searchEvents(EventFilterDTO eventFilterDTO);
 }

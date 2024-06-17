@@ -2,12 +2,17 @@ package com.example.demo.Services.Impl;
 
 import com.example.demo.DTO.EventDTOCreate;
 import com.example.demo.DTO.EventDTOUpdate;
+import com.example.demo.DTO.EventFilterDTO;
 import com.example.demo.Event;
+import com.example.demo.EventSpecification;
 import com.example.demo.Repository.EventRepository;
 import com.example.demo.Services.EventServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.UUID;
@@ -16,10 +21,12 @@ import java.util.UUID;
 public class EventServiceImpl implements EventServices {
 
     private final EventRepository repository;
+    private final EventRepository eventRepository;
 
     @Autowired // Ajoutez cette annotation pour l'injection de dépendances
-    public EventServiceImpl(EventRepository repository) {
+    public EventServiceImpl(EventRepository repository, EventRepository eventRepository) {
         this.repository = repository;
+        this.eventRepository = eventRepository;
     }
 
 
@@ -64,6 +71,13 @@ public class EventServiceImpl implements EventServices {
     public Event getEventById(UUID idEvent) {
         return repository.findById(idEvent).orElse(null);
     }
+
+    @Override
+    public List<Event> searchEvents(EventFilterDTO eventFilterDTO) {
+        Specification<Event> specification = EventSpecification.withCriteria(eventFilterDTO);
+        return eventRepository.findAll(specification);
+        }
+
 
 
 }

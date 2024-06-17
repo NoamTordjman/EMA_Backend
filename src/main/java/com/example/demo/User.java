@@ -11,7 +11,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id_user", columnDefinition = "UUID")
-    private UUID id_user;
+    private UUID id;
 
     @Column(name="name")
     private String name;
@@ -29,16 +29,16 @@ public class User {
     public User() {
     }
 
-    public User(UUID id_user, String name, String surname, String mail, String password) {
-        this.id_user = id_user;
+    public User(UUID id, String name, String surname, String mail, String password) {
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.mail = mail;
         this.password = password;
     }
 
-    public void setId_user(UUID id_user) {
-        this.id_user = id_user;
+    public void setId(UUID id_user) {
+        this.id = id_user;
     }
 
     public void setName(String name) {
@@ -56,8 +56,8 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public UUID getId_user() {
-        return id_user;
+    public UUID getId() {
+        return id;
     }
 
     public String getName() {

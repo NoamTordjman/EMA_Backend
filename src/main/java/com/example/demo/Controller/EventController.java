@@ -3,6 +3,7 @@ package com.example.demo.Controller;
 
 import com.example.demo.DTO.EventDTOCreate;
 import com.example.demo.DTO.EventDTOUpdate;
+import com.example.demo.DTO.EventFilterDTO;
 import com.example.demo.Event;
 import com.example.demo.Services.EventServices;
 import jdk.jfr.Category;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
@@ -21,7 +23,7 @@ import java.util.UUID;
         description = "Permit to control the Event"
 )
 @RequestMapping("/v1/Event")
-public class EventController {
+public class  EventController {
 
     private final EventServices event;
 
@@ -50,4 +52,16 @@ public class EventController {
         event.deleteEvent(id);
     }
 
+    @GetMapping("/getByFilter")
+    public List<Event> searchEvents(@RequestParam(required = false) LocalDateTime date,
+                                    @RequestParam(required = false) String location,
+                                    @RequestParam(required = false) UUID idCreator) {
+        EventFilterDTO criteria = new EventFilterDTO();
+        criteria.setDate(date);
+        criteria.setLocation(location);
+        criteria.setIdCreator(idCreator);
+        return event.searchEvents(criteria);
     }
+
+
+}
