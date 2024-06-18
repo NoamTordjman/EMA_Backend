@@ -51,4 +51,14 @@ public class FeedbackController {
     public Feedback getFeedbackById(@PathVariable UUID id) {
         return feedbackService.getFeedbackById(id);
     }
+
+    @GetMapping("/users/{userId}")
+    public List<Feedback> getFeedbackByUserId(@PathVariable UUID userId) {
+        return feedbackService.getFeedbackByUser(userId);
+    }
+
+    @GetMapping("creator/{idCreator}")
+    public List<Feedback> getFeedbackByCreatorId(@PathVariable UUID idCreator) {
+        return feedbackService.getFeedbackByIdCreator(idCreator);
+    }
 }

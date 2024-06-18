@@ -63,5 +63,11 @@ public class  EventController {
         return event.searchEvents(criteria);
     }
 
+    @GetMapping("/members/{memberId}")
+    public List<Event> getEventByMember(@PathVariable UUID memberId){
+        return event.getEventByMember(memberId);
+    }
 
-}
+
+
+    }

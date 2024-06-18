@@ -17,4 +17,6 @@ public interface FeedbackServices {
     Feedback updateFeedback(UUID feedbackID,FeedbackDTOUpdate feedbackDTOUpdate);
     List<Feedback> getAllFeedback();
     Feedback getFeedbackById (UUID idFeedback);
+    List<Feedback> getFeedbackByUser (UUID userId);
+    List<Feedback> getFeedbackByIdCreator(UUID creatorId);
 }
