@@ -34,13 +34,13 @@ public class UserServiceImpl implements UserServices {
 
     @Override
     public void deleteUser(UUID idUser) {
-        User user = repository.findById(idUser).orElseThrow(()-> new UserNonExistent("User not found"));
+        User user = repository.findById(idUser).orElseThrow(()-> new UserNonExistent(idUser));
         repository.deleteById(idUser);
     }
 
     @Override
     public User updateUser(UserDTOUpdate userDTO) {
-        User user = repository.findById(userDTO.getUserid()).orElseThrow(()-> new UserNonExistent("User not found"));
+        User user = repository.findById(userDTO.getUserid()).orElseThrow(()-> new UserNonExistent(userDTO.getUserid()));
         user.setMail(userDTO.getMail());
         return repository.save(user);
     }
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserServices {
 
     @Override
     public User getUserById(UUID idUser) {
-        return repository.findById(idUser).orElseThrow(()-> new UserNonExistent("User not found"));
+        return repository.findById(idUser).orElseThrow(()-> new UserNonExistent(idUser));
     }
 
     @Override

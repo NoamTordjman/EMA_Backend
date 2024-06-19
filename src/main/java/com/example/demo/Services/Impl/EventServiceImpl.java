@@ -52,7 +52,8 @@ public class EventServiceImpl implements EventServices {
         event.setEventStatus(EventDTO.getEventStatus());
         event.setDateBegining(EventDTO.getDateBegining());
         event.setDate_end(EventDTO.getDate_end());
-        event.setCreator(userRepository.getReferenceById(EventDTO.getIdCreator()));
+        User creator = userRepository.findById(EventDTO.getIdCreator()).orElseThrow(()-> new UserNonExistent(EventDTO.getIdCreator()));
+        event.setCreator(creator);
         event.setLocation(EventDTO.getLocation());
         return repository.save(event);
     }
@@ -103,7 +104,7 @@ public class EventServiceImpl implements EventServices {
 
     @Override
     public List<Event> getEventByMember(UUID memberId) {
-        User user = userRepository.findById(memberId).orElseThrow(()-> new UserNonExistent("User not found"));
+        User user = userRepository.findById(memberId).orElseThrow(()-> new UserNonExistent(memberId));
         List<Registration> registrations = registrationRepository.findByUser(user);
         if (registrations.isEmpty()) {
             throw new RegistrationNonExistent("No registration for this member");
@@ -122,7 +123,7 @@ public class EventServiceImpl implements EventServices {
 
     @Override
     public List<Event> getEventByNonRegisteredMember(UUID memberId) {
-        User user = userRepository.findById(memberId).orElseThrow(()-> new UserNonExistent("User not found"));;
+        User user = userRepository.findById(memberId).orElseThrow(()-> new UserNonExistent(memberId));;
         List<Registration> registrations = registrationRepository.findByUser(user);
         if (registrations.isEmpty()) {
             throw new RegistrationNonExistent("No registration for this member");
