@@ -37,7 +37,7 @@ public class  EventController {
         return event.getAllEvents();
     }
 
-    @PostMapping
+    @PostMapping("/Create")
     public Event CreateEvent(@RequestBody EventDTOCreate EventDTOCreate) {
         return event.CreateEvent(EventDTOCreate);
     }

@@ -11,7 +11,8 @@ import java.util.UUID;
 public class Event {
 
     @Id
-    @Column(name="id_event")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id_event", columnDefinition = "UUID")
     private UUID idEvent;
 
     @Column(name="title")
@@ -82,7 +83,7 @@ public class Event {
         this.date_end = duration;
     }
 
-    public void setIdCreator(User idCreator) {
+    public void setCreator(User idCreator) {
         this.idCreator = idCreator;
     }
 
