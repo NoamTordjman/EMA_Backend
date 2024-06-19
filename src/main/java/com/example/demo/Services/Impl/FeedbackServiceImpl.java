@@ -38,7 +38,7 @@ public class FeedbackServiceImpl implements FeedbackServices {
 
     @Override
     public Feedback CreateFeedback(FeedbackDTOCreate feedbackDTO) {
-        Registration registration = RegistrationRepository.findById(feedbackDTO.getRegistrationId()).orElseThrow(()-> new FeedbackNonExistent("Registration not found"));
+        Registration registration = RegistrationRepository.findById(feedbackDTO.getRegistrationId()).orElseThrow(()-> new FeedbackNonExistent(feedbackDTO.getRegistrationId()));
         Feedback feedback = new Feedback();
         feedback.setRegistration(registration);
         feedback.setDescription(feedbackDTO.getDescription());
@@ -48,7 +48,7 @@ public class FeedbackServiceImpl implements FeedbackServices {
 
     @Override
     public Feedback updateFeedback(UUID feedbackID, FeedbackDTOUpdate feedbackDTOUpdate) {
-        Feedback feedback = FeedbackRepository.findById(feedbackID).orElseThrow(()-> new FeedbackNonExistent("Feedback not found"));
+        Feedback feedback = FeedbackRepository.findById(feedbackID).orElseThrow(()-> new FeedbackNonExistent(feedbackID));
         feedback.setRating(feedbackDTOUpdate.getRating());
         feedback.setDescription(feedbackDTOUpdate.getComments());
         Registration registration = RegistrationRepository.findById(feedback.getRegistration().getRegistrationID()).orElse(null);
@@ -58,7 +58,7 @@ public class FeedbackServiceImpl implements FeedbackServices {
 
     @Override
     public void deleteFeedback(UUID idFeedback) {
-        Feedback feedback = FeedbackRepository.findById(idFeedback).orElseThrow(()-> new FeedbackNonExistent("Feedback not found"));
+        Feedback feedback = FeedbackRepository.findById(idFeedback).orElseThrow(()-> new FeedbackNonExistent(idFeedback));
         FeedbackRepository.deleteById(idFeedback);
     }
 
@@ -70,7 +70,7 @@ public class FeedbackServiceImpl implements FeedbackServices {
 
     @Override
     public Feedback getFeedbackById(UUID idFeedback) {
-        return FeedbackRepository.findById(idFeedback).orElseThrow(()-> new FeedbackNonExistent("Feedback not found"));
+        return FeedbackRepository.findById(idFeedback).orElseThrow(()-> new FeedbackNonExistent(idFeedback));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class FeedbackServiceImpl implements FeedbackServices {
         User user = UserRepository.findById(UserID).orElseThrow(()-> new UserNonExistent(UserID));
         List<Registration> registrations = RegistrationRepository.findByUser(user);
         if (registrations.isEmpty()) {
-            throw new RegistrationNonExistent("Registration not found");
+            throw new RegistrationNonExistent(UserID);
         }
         return FeedbackRepository.findByRegistrationIn(registrations);
     }
@@ -88,11 +88,11 @@ public class FeedbackServiceImpl implements FeedbackServices {
         User user = UserRepository.findById(idCreator).orElseThrow(()-> new UserNonExistent(idCreator));
         List<Event> events = EventRepository.findByIdCreator(user);
         if (events.isEmpty()) {
-            throw new EventNonExistant("Event not found");
+            throw new EventNonExistant(idCreator);
         }
         List<Registration> registrations = RegistrationRepository.findByEventIn(events);
         if (registrations.isEmpty()) {
-            throw new RegistrationNonExistent("Registration not found");
+            throw new RegistrationNonExistent(idCreator);
         }
         return FeedbackRepository.findByRegistrationIn(registrations);
     }

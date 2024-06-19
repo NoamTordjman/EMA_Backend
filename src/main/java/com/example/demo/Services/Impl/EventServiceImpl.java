@@ -61,7 +61,7 @@ public class EventServiceImpl implements EventServices {
 
     @Override
     public Event updateEvent(UUID EventID, EventDTOUpdate EventDTO){
-        Event event = repository.findById(EventID).orElseThrow(()-> new EventNonExistant("Event not found"));
+        Event event = repository.findById(EventID).orElseThrow(()-> new EventNonExistant(EventID));
         event.setTitle(EventDTO.getTitle());
         event.setDescription(EventDTO.getDescription());
         event.setEventStatus(EventDTO.getEventStatus());
@@ -73,12 +73,12 @@ public class EventServiceImpl implements EventServices {
 
     @Override
     public void deleteEvent(UUID idEvent) {
-        Event event = repository.findById(idEvent).orElseThrow(()-> new EventNonExistant("Event not found with id" + idEvent.toString()));
+        Event event = repository.findById(idEvent).orElseThrow(()-> new EventNonExistant(idEvent));
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime date_end = event.getDate_end();
 
         if(date_end.isBefore(now)){
-            throw new EventCannotBeDeletedException("Event cannot be deleted because it is over");
+            throw new EventCannotBeDeletedException();
         }
 
         repository.deleteById(idEvent);
@@ -91,7 +91,7 @@ public class EventServiceImpl implements EventServices {
 
     @Override
     public Event getEventById(UUID idEvent) {
-        Event event = repository.findById(idEvent).orElseThrow(()-> new EventNonExistant("Event not found with id" + idEvent.toString()));
+        Event event = repository.findById(idEvent).orElseThrow(()-> new EventNonExistant(idEvent));
         return repository.findById(idEvent).orElse(null);
     }
 
@@ -107,7 +107,7 @@ public class EventServiceImpl implements EventServices {
         User user = userRepository.findById(memberId).orElseThrow(()-> new UserNonExistent(memberId));
         List<Registration> registrations = registrationRepository.findByUser(user);
         if (registrations.isEmpty()) {
-            throw new RegistrationNonExistent("No registration for this member");
+            throw new RegistrationNonExistent(memberId);
         }
         List<Event> events = new ArrayList<>();
         for (Registration registration : registrations) {
@@ -126,7 +126,7 @@ public class EventServiceImpl implements EventServices {
         User user = userRepository.findById(memberId).orElseThrow(()-> new UserNonExistent(memberId));;
         List<Registration> registrations = registrationRepository.findByUser(user);
         if (registrations.isEmpty()) {
-            throw new RegistrationNonExistent("No registration for this member");
+            throw new RegistrationNonExistent(memberId);
         }
         List<Event> allEvents = eventRepository.findAll();
         List<Event> nonRegisteredEvents = new ArrayList<>();
@@ -150,7 +150,7 @@ public class EventServiceImpl implements EventServices {
         List<Event> uniqueEventsList = new ArrayList<>(uniqueEvents);
 
         if(uniqueEventsList.isEmpty()){
-            throw new EventNonExistant("No events found for this Id");
+            throw new EventNonExistant(memberId);
         }
 
         return uniqueEventsList;
