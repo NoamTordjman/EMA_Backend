@@ -10,7 +10,8 @@ import java.util.UUID;
 public class Feedback {
 
     @Id
-    @Column(name = "id_feedback")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id_feedback", columnDefinition = "UUID")
     private UUID id_feedback;
 
     @Column(name = "description")

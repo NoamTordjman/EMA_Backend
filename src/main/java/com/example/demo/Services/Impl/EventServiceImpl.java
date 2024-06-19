@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
 
 
 import java.util.*;
@@ -25,14 +24,13 @@ import java.util.UUID;
 public class EventServiceImpl implements EventServices {
 
     private final EventRepository repository;
-    private final EventRepository eventRepository;
     private final RegistrationRepository registrationRepository;
     private final UserRepository userRepository;
 
     @Autowired // Ajoutez cette annotation pour l'injection de dépendances
-    public EventServiceImpl(EventRepository repository, EventRepository eventRepository, RegistrationRepository registrationRepository, UserRepository userRepository) {
+    public EventServiceImpl(EventRepository repository, RegistrationRepository registrationRepository, UserRepository userRepository) {
         this.repository = repository;
-        this.eventRepository = eventRepository;
+
         this.registrationRepository = registrationRepository;
         this.userRepository = userRepository;
     }
@@ -47,7 +45,7 @@ public class EventServiceImpl implements EventServices {
         event.setEventStatus(EventDTO.getEventStatus());
         event.setDateBegining(EventDTO.getDateBegining());
         event.setDate_end(EventDTO.getDate_end());
-        event.setIdCreator(EventDTO.getIdCreator());
+        event.setCreator(userRepository.getReferenceById(EventDTO.getIdCreator()));
         event.setLocation(EventDTO.getLocation());
         return repository.save(event);
     }
@@ -83,7 +81,7 @@ public class EventServiceImpl implements EventServices {
     @Override
     public List<Event> searchEvents(EventFilterDTO eventFilterDTO) {
         Specification<Event> specification = EventSpecification.withCriteria(eventFilterDTO);
-        return eventRepository.findAll(specification);
+        return repository.findAll(specification);
         }
 
 
@@ -113,7 +111,7 @@ public class EventServiceImpl implements EventServices {
             return null;
         }
         List<Registration> registrations = registrationRepository.findByUser(user);
-        List<Event> allEvents = eventRepository.findAll();
+        List<Event> allEvents = repository.findAll();
         List<Event> nonRegisteredEvents = new ArrayList<>();
 
         // Vérifie pour chaque événement s'il n'existe pas d'enregistrement correspondant à l'utilisateur

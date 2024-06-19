@@ -1,8 +1,7 @@
 package com.example.demo.DTO;
 
-import com.example.demo.User;
-
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class EventDTOCreate {
     private String title;
@@ -11,17 +10,17 @@ public class EventDTOCreate {
     private String eventStatus;
     private LocalDateTime date_end;
     private String location;
-    private User idCreator;
+    private UUID idCreator;
 
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public EventDTOCreate(String title, String description, LocalDateTime dateBegining, String eventStatus, LocalDateTime date_end, String location, User idCreator) {
+    public EventDTOCreate(String title, String description, LocalDateTime dateBegining, String eventStatus, LocalDateTime date_end, String location, UUID idCreator) {
         this.title = title;
         this.description = description;
         this.dateBegining = dateBegining;
-        this.eventStatus = eventStatus;
+        this.eventStatus = "UpComing";
         this.date_end = date_end;
         this.location = location;
         this.idCreator = idCreator;
@@ -47,7 +46,7 @@ public class EventDTOCreate {
         this.location = location;
     }
 
-    public void setIdCreator(User idCreator) {
+    public void setIdCreator(UUID idCreator) {
         this.idCreator = idCreator;
     }
 
@@ -71,7 +70,7 @@ public class EventDTOCreate {
         return location;
     }
 
-    public User getIdCreator() {
+    public UUID getIdCreator() {
         return idCreator;
     }
 
