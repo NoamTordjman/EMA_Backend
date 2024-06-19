@@ -5,6 +5,7 @@ import com.example.demo.DTO.UserDTOUpdate;
 import com.example.demo.Repository.UserRepository;
 import com.example.demo.Services.UserServices;
 import com.example.demo.User;
+import com.example.demo.exception.UserNonExistent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,13 +34,13 @@ public class UserServiceImpl implements UserServices {
 
     @Override
     public void deleteUser(UUID idUser) {
+        User user = repository.findById(idUser).orElseThrow(()-> new UserNonExistent("User not found"));
         repository.deleteById(idUser);
     }
 
     @Override
     public User updateUser(UserDTOUpdate userDTO) {
-        User user = repository.findById(userDTO.getUserid()).orElse(null);
-        assert user != null;
+        User user = repository.findById(userDTO.getUserid()).orElseThrow(()-> new UserNonExistent("User not found"));
         user.setMail(userDTO.getMail());
         return repository.save(user);
     }
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserServices {
 
     @Override
     public User getUserById(UUID idUser) {
-        return repository.findById(idUser).orElse(null);
+        return repository.findById(idUser).orElseThrow(()-> new UserNonExistent("User not found"));
     }
 
     @Override

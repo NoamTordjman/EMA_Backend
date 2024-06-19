@@ -13,6 +13,7 @@ import com.example.demo.Repository.UserRepository;
 import com.example.demo.Services.FeedbackServices;
 import com.example.demo.Services.RegistrationServices;
 import com.example.demo.User;
+import com.example.demo.exception.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class FeedbackServiceImpl implements FeedbackServices {
 
     @Override
     public Feedback CreateFeedback(FeedbackDTOCreate feedbackDTO) {
-        Registration registration = RegistrationRepository.findById(feedbackDTO.getRegistrationId()).orElse(null);
+        Registration registration = RegistrationRepository.findById(feedbackDTO.getRegistrationId()).orElseThrow(()-> new FeedbackNonExistent("Registration not found"));
         Feedback feedback = new Feedback();
         feedback.setRegistration(registration);
         feedback.setDescription(feedbackDTO.getDescription());
@@ -47,8 +48,7 @@ public class FeedbackServiceImpl implements FeedbackServices {
 
     @Override
     public Feedback updateFeedback(UUID feedbackID, FeedbackDTOUpdate feedbackDTOUpdate) {
-        Feedback feedback = FeedbackRepository.findById(feedbackID).orElse(null);
-        assert feedback != null;
+        Feedback feedback = FeedbackRepository.findById(feedbackID).orElseThrow(()-> new FeedbackNonExistent("Feedback not found"));
         feedback.setRating(feedbackDTOUpdate.getRating());
         feedback.setDescription(feedbackDTOUpdate.getComments());
         Registration registration = RegistrationRepository.findById(feedback.getRegistration().getRegistrationID()).orElse(null);
@@ -58,6 +58,7 @@ public class FeedbackServiceImpl implements FeedbackServices {
 
     @Override
     public void deleteFeedback(UUID idFeedback) {
+        Feedback feedback = FeedbackRepository.findById(idFeedback).orElseThrow(()-> new FeedbackNonExistent("Feedback not found"));
         FeedbackRepository.deleteById(idFeedback);
     }
 
@@ -69,24 +70,30 @@ public class FeedbackServiceImpl implements FeedbackServices {
 
     @Override
     public Feedback getFeedbackById(UUID idFeedback) {
-        return FeedbackRepository.findById(idFeedback).orElse(null);
+        return FeedbackRepository.findById(idFeedback).orElseThrow(()-> new FeedbackNonExistent("Feedback not found"));
     }
 
     @Override
     public List<Feedback> getFeedbackByUser(UUID UserID) {
-        User user = UserRepository.findById(UserID).orElse(null);
-        if (user == null) {
-            return Collections.emptyList();
-        }
+        User user = UserRepository.findById(UserID).orElseThrow(()-> new UserNonExistent("User not found"));
         List<Registration> registrations = RegistrationRepository.findByUser(user);
+        if (registrations.isEmpty()) {
+            throw new RegistrationNonExistent("Registration not found");
+        }
         return FeedbackRepository.findByRegistrationIn(registrations);
     }
 
     @Override
     public List<Feedback> getFeedbackByIdCreator(UUID idCreator) {
-        User user = UserRepository.findById(idCreator).orElse(null);
+        User user = UserRepository.findById(idCreator).orElseThrow(()-> new UserNonExistent("User not found"));
         List<Event> events = EventRepository.findByIdCreator(user);
+        if (events.isEmpty()) {
+            throw new EventNonExistant("Event not found");
+        }
         List<Registration> registrations = RegistrationRepository.findByEventIn(events);
+        if (registrations.isEmpty()) {
+            throw new RegistrationNonExistent("Registration not found");
+        }
         return FeedbackRepository.findByRegistrationIn(registrations);
     }
 
