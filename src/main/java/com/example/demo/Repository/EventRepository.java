@@ -16,8 +16,6 @@ import java.util.UUID;
 public interface EventRepository extends JpaRepository<Event, UUID>, JpaSpecificationExecutor<Event> {
     List<Event> findByIdCreator(User user);
 
-    List<Event> findByRegistrationIn(List<Registration> registrations);
-
 
 
 }

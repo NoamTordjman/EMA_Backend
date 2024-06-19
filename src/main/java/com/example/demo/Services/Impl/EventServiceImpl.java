@@ -18,7 +18,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 
-import java.util.List;
+import java.util.*;
 import java.util.UUID;
 
 @Service
@@ -86,12 +86,58 @@ public class EventServiceImpl implements EventServices {
         return eventRepository.findAll(specification);
         }
 
+
     @Override
-    public List<Event> getEventByMember(UUID memberId){
+    public List<Event> getEventByMember(UUID memberId) {
         User user = userRepository.findById(memberId).orElse(null);
+        if (user == null) {
+            return null;
+        }
         List<Registration> registrations = registrationRepository.findByUser(user);
-        return eventRepository.findByRegistrationIn(registrations);
+        List<Event> events = new ArrayList<>();
+        for (Registration registration : registrations) {
+            events.add(registration.getEvent());
+        }
+        events.sort(Comparator.comparing(Event::getDateBegining).reversed());
+
+        Set<Event> uniqueEvents = new LinkedHashSet<>(events);
+        List<Event> uniqueEventsList = new ArrayList<>(uniqueEvents);
+
+        return uniqueEventsList;
     }
+
+    @Override
+    public List<Event> getEventByNonRegisteredMember(UUID memberId) {
+        User user = userRepository.findById(memberId).orElse(null);
+        if (user == null) {
+            return null;
+        }
+        List<Registration> registrations = registrationRepository.findByUser(user);
+        List<Event> allEvents = eventRepository.findAll();
+        List<Event> nonRegisteredEvents = new ArrayList<>();
+
+        // Vérifie pour chaque événement s'il n'existe pas d'enregistrement correspondant à l'utilisateur
+        for (Event event : allEvents) {
+            boolean isRegistered = false;
+            for (Registration registration : registrations) {
+                if (registration.getEvent().equals(event)) {
+                    isRegistered = true;
+                    break;
+                }
+            }
+            if (!isRegistered) {
+                nonRegisteredEvents.add(event);
+            }
+        }
+
+        nonRegisteredEvents.sort(Comparator.comparing(Event::getDateBegining).reversed());
+
+        Set<Event> uniqueEvents = new LinkedHashSet<>(nonRegisteredEvents);
+        List<Event> uniqueEventsList = new ArrayList<>(uniqueEvents);
+
+        return uniqueEventsList;
+    }
+
 
 
 }

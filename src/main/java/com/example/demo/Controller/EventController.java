@@ -68,6 +68,11 @@ public class  EventController {
         return event.getEventByMember(memberId);
     }
 
+    @GetMapping("/non-registered/{memberId}")
+    public List<Event> getEventsByNonRegisteredMember(@PathVariable UUID memberId) {
+        return event.getEventByNonRegisteredMember(memberId);
+    }
+
 
 
     }

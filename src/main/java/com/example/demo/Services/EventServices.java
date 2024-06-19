@@ -17,4 +17,5 @@ public interface EventServices {
     Event getEventById(UUID idEvent);
     List<Event> searchEvents(EventFilterDTO eventFilterDTO);
     List<Event> getEventByMember(UUID memberId);
+    List<Event> getEventByNonRegisteredMember(UUID memberId);
 }
