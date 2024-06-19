@@ -52,10 +52,11 @@ public class EventServiceImpl implements EventServices {
         event.setEventStatus(EventDTO.getEventStatus());
         event.setDateBegining(EventDTO.getDateBegining());
         event.setDate_end(EventDTO.getDate_end());
-        event.setIdCreator(EventDTO.getIdCreator());
+        event.setCreator(userRepository.getReferenceById(EventDTO.getIdCreator()));
         event.setLocation(EventDTO.getLocation());
         return repository.save(event);
     }
+
 
     @Override
     public Event updateEvent(UUID EventID, EventDTOUpdate EventDTO){
