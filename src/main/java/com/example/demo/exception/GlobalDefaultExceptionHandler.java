@@ -5,13 +5,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-public class GlobalDefaultExceptionHandler {}
-/*
+
+
 @ControllerAdvice
 public class GlobalDefaultExceptionHandler {
     private static final Logger logger= LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
 
     @ExceptionHandler({
+            UserNonExistent.class,
+            RegistrationNonExistent.class,
+            EventNonExistant.class,
+            FeedbackNonExistent.class
     })
     public ResponseEntity<String> handleNotFoundException(Exception ex){
         logger.warn("[NOT FOUND] {}",  ex.getMessage());
@@ -25,7 +29,6 @@ public class GlobalDefaultExceptionHandler {
         return ResponseEntity.status(402).body(ex.getMessage());
     }
     }
- */
 
 
 

@@ -6,7 +6,7 @@ import java.util.UUID;
 public class EventDTOCreate {
     private String title;
     private String description;
-    private LocalDateTime dateBegining;
+    private LocalDateTime dateBeginning;
     private String eventStatus;
     private LocalDateTime date_end;
     private String location;
@@ -16,10 +16,10 @@ public class EventDTOCreate {
         this.title = title;
     }
 
-    public EventDTOCreate(String title, String description, LocalDateTime dateBegining, String eventStatus, LocalDateTime date_end, String location, UUID idCreator) {
+    public EventDTOCreate(String title, String description, LocalDateTime dateBeginning, String eventStatus, LocalDateTime date_end, String location, UUID idCreator) {
         this.title = title;
         this.description = description;
-        this.dateBegining = dateBegining;
+        this.dateBeginning = dateBeginning;
         this.eventStatus = "UpComing";
         this.date_end = date_end;
         this.location = location;
@@ -30,8 +30,8 @@ public class EventDTOCreate {
         this.description = description;
     }
 
-    public void setDateBegining(LocalDateTime dateBegining) {
-        this.dateBegining = dateBegining;
+    public void setDateBeginning(LocalDateTime dateBeginning) {
+        this.dateBeginning = dateBeginning;
     }
 
     public void setEventStatus(String eventStatus) {
@@ -54,8 +54,8 @@ public class EventDTOCreate {
         return description;
     }
 
-    public LocalDateTime getDateBegining() {
-        return dateBegining;
+    public LocalDateTime getDateBeginning() {
+        return dateBeginning;
     }
 
     public String getEventStatus() {

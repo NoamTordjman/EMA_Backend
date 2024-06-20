@@ -2,22 +2,18 @@ package com.example.demo.Services.Impl;
 
 import com.example.demo.DTO.FeedbackDTOCreate;
 import com.example.demo.DTO.FeedbackDTOUpdate;
-import com.example.demo.DTO.UserDTOCreate;
 import com.example.demo.Event;
 import com.example.demo.Feedback;
 import com.example.demo.Registration;
-import com.example.demo.Repository.EventRepository;
 import com.example.demo.Repository.FeedbackRepository;
-import com.example.demo.Repository.RegistrationRepository;
-import com.example.demo.Repository.UserRepository;
+import com.example.demo.Services.EventServices;
 import com.example.demo.Services.FeedbackServices;
 import com.example.demo.Services.RegistrationServices;
+import com.example.demo.Services.UserServices;
 import com.example.demo.User;
 import com.example.demo.exception.*;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,20 +21,20 @@ import java.util.UUID;
 public class FeedbackServiceImpl implements FeedbackServices {
 
     private final FeedbackRepository FeedbackRepository;
-    private final RegistrationRepository RegistrationRepository;
-    private final UserRepository UserRepository;
-    private final EventRepository EventRepository;
+    private final RegistrationServices RegistrationService;
+    private final UserServices UserService;
 
-    public FeedbackServiceImpl(com.example.demo.Repository.FeedbackRepository feedbackRepository, com.example.demo.Repository.RegistrationRepository registrationRepository, com.example.demo.Repository.UserRepository userRepository, com.example.demo.Repository.EventRepository eventRepository) {
+
+    public FeedbackServiceImpl(FeedbackRepository feedbackRepository, RegistrationServices registrationService, UserServices userService) {
         FeedbackRepository = feedbackRepository;
-        RegistrationRepository = registrationRepository;
-        UserRepository = userRepository;
-        EventRepository = eventRepository;
+        RegistrationService = registrationService;
+        UserService = userService;
+
     }
 
     @Override
-    public Feedback CreateFeedback(FeedbackDTOCreate feedbackDTO) {
-        Registration registration = RegistrationRepository.findById(feedbackDTO.getRegistrationId()).orElseThrow(()-> new FeedbackNonExistent(feedbackDTO.getRegistrationId()));
+    public Feedback CreateFeedback(FeedbackDTOCreate feedbackDTO) throws RegistrationNonExistent{
+        Registration registration = RegistrationService.getRegistrationById(feedbackDTO.getRegistrationId());
         Feedback feedback = new Feedback();
         feedback.setRegistration(registration);
         feedback.setDescription(feedbackDTO.getDescription());
@@ -47,18 +43,18 @@ public class FeedbackServiceImpl implements FeedbackServices {
     }
 
     @Override
-    public Feedback updateFeedback(UUID feedbackID, FeedbackDTOUpdate feedbackDTOUpdate) {
+    public Feedback updateFeedback(UUID feedbackID, FeedbackDTOUpdate feedbackDTOUpdate) throws FeedbackNonExistent{
         Feedback feedback = FeedbackRepository.findById(feedbackID).orElseThrow(()-> new FeedbackNonExistent(feedbackID));
         feedback.setRating(feedbackDTOUpdate.getRating());
         feedback.setDescription(feedbackDTOUpdate.getComments());
-        Registration registration = RegistrationRepository.findById(feedback.getRegistration().getRegistrationID()).orElse(null);
+        Registration registration = feedback.getRegistration();
         feedback.setRegistration(registration);
         return FeedbackRepository.save(feedback);
     }
 
     @Override
-    public void deleteFeedback(UUID idFeedback) {
-        Feedback feedback = FeedbackRepository.findById(idFeedback).orElseThrow(()-> new FeedbackNonExistent(idFeedback));
+    public void deleteFeedback(UUID idFeedback) throws FeedbackNonExistent{
+        Feedback feedback = FeedbackRepository.getReferenceById(idFeedback);
         FeedbackRepository.deleteById(idFeedback);
     }
 
@@ -69,33 +65,20 @@ public class FeedbackServiceImpl implements FeedbackServices {
     }
 
     @Override
-    public Feedback getFeedbackById(UUID idFeedback) {
+    public Feedback getFeedbackById(UUID idFeedback) throws FeedbackNonExistent{
         return FeedbackRepository.findById(idFeedback).orElseThrow(()-> new FeedbackNonExistent(idFeedback));
     }
 
     @Override
-    public List<Feedback> getFeedbackByUser(UUID UserID) {
-        User user = UserRepository.findById(UserID).orElseThrow(()-> new UserNonExistent(UserID));
-        List<Registration> registrations = RegistrationRepository.findByUser(user);
+    public List<Feedback> getFeedbackByUser(UUID UserID) throws UserNonExistent {
+        User user = UserService.getUserById(UserID);
+        List<Registration> registrations = RegistrationService.getRegistrationByUserId(user.getId());
         if (registrations.isEmpty()) {
             throw new RegistrationNonExistent(UserID);
         }
         return FeedbackRepository.findByRegistrationIn(registrations);
     }
 
-    @Override
-    public List<Feedback> getFeedbackByIdCreator(UUID idCreator) {
-        User user = UserRepository.findById(idCreator).orElseThrow(()-> new UserNonExistent(idCreator));
-        List<Event> events = EventRepository.findByIdCreator(user);
-        if (events.isEmpty()) {
-            throw new EventNonExistant(idCreator);
-        }
-        List<Registration> registrations = RegistrationRepository.findByEventIn(events);
-        if (registrations.isEmpty()) {
-            throw new RegistrationNonExistent(idCreator);
-        }
-        return FeedbackRepository.findByRegistrationIn(registrations);
-    }
 
 
 }

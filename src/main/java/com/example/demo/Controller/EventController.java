@@ -6,6 +6,9 @@ import com.example.demo.DTO.EventDTOUpdate;
 import com.example.demo.DTO.EventFilterDTO;
 import com.example.demo.Event;
 import com.example.demo.Services.EventServices;
+import com.example.demo.exception.EventNonExistant;
+import com.example.demo.exception.RegistrationNonExistent;
+import com.example.demo.exception.UserNonExistent;
 import jdk.jfr.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -37,17 +41,17 @@ public class  EventController {
         return event.getAllEvents();
     }
 
-    @PostMapping("/Create")
+    @PostMapping("/create")
     public Event CreateEvent(@RequestBody EventDTOCreate EventDTOCreate) {
         return event.CreateEvent(EventDTOCreate);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public Event UpdateEvent(@PathVariable UUID id,@RequestBody EventDTOUpdate EventDTOUpdate) {
         return event.updateEvent(id,EventDTOUpdate);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/delete/{id}")
     public void DeleteEvent(@PathVariable UUID id) {
         event.deleteEvent(id);
     }
@@ -64,12 +68,12 @@ public class  EventController {
     }
 
     @GetMapping("/members/{memberId}")
-    public List<Event> getEventByMember(@PathVariable UUID memberId){
+    public Set<Event> getEventByMember (@PathVariable UUID memberId) throws UserNonExistent, RegistrationNonExistent {
         return event.getEventByMember(memberId);
     }
 
     @GetMapping("/non-registered/{memberId}")
-    public List<Event> getEventsByNonRegisteredMember(@PathVariable UUID memberId) {
+    public List<Event> getEventsByNonRegisteredMember(@PathVariable UUID memberId) throws UserNonExistent, RegistrationNonExistent, EventNonExistant {
         return event.getEventByNonRegisteredMember(memberId);
     }
 

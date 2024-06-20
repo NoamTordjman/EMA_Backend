@@ -5,14 +5,13 @@ import com.example.demo.Event;
 import com.example.demo.Registration;
 import com.example.demo.Repository.EventRepository;
 import com.example.demo.Repository.RegistrationRepository;
-import com.example.demo.Repository.UserRepository;
 import com.example.demo.Services.RegistrationServices;
+import com.example.demo.Services.UserServices;
 import com.example.demo.User;
 import com.example.demo.exception.EventNonExistant;
 import com.example.demo.exception.RegistrationNonExistent;
 import com.example.demo.exception.UserAlreadyRegisteredException;
 import com.example.demo.exception.UserNonExistent;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,21 +22,30 @@ public class RegistrationServiceImpl implements RegistrationServices {
 
 
     private final RegistrationRepository RegistrationRepository;
-    private final UserRepository UserRepository;
+    private final UserServices UserService;
     private final EventRepository EventRepository;
 
-    public RegistrationServiceImpl(com.example.demo.Repository.RegistrationRepository registrationRepository, com.example.demo.Repository.UserRepository userRepository, com.example.demo.Repository.EventRepository eventRepository) {
+    public RegistrationServiceImpl(com.example.demo.Repository.RegistrationRepository registrationRepository, UserServices userService, EventRepository eventRepository) {
         RegistrationRepository = registrationRepository;
-        UserRepository = userRepository;
+        UserService = userService;
         EventRepository = eventRepository;
     }
 
 
-    @Override
-    public Registration CreateRegistration(RegistrationDTOCreate registrationDTO) {
-        User user = UserRepository.findById(registrationDTO.getUserId()).orElseThrow(()-> new UserNonExistent(registrationDTO.getUserId()));
-        Event event = EventRepository.findById(registrationDTO.getEventId()).orElseThrow(()-> new EventNonExistant(registrationDTO.getEventId()));
 
+    @Override
+    public List<Registration> getRegistrationByUserId(UUID id_user) throws UserNonExistent {
+        User u = UserService.getUserById(id_user);
+        return RegistrationRepository.findByUser(u);
+    }
+
+
+
+
+    @Override
+    public Registration CreateRegistration(RegistrationDTOCreate registrationDTO) throws UserAlreadyRegisteredException,UserNonExistent,EventNonExistant{
+        User user = UserService.getUserById(registrationDTO.getUserId());
+        Event event = EventRepository.findById(registrationDTO.getEventId()).orElseThrow(()->new EventNonExistant(registrationDTO.getUserId()));
 
         List<Registration> allRegistration = RegistrationRepository.findAll();
         for(Registration r : allRegistration){
@@ -52,10 +60,8 @@ public class RegistrationServiceImpl implements RegistrationServices {
     }
 
     @Override
-    public void deleteRegistration(UUID id_Registration) {
-        if (!RegistrationRepository.existsById(id_Registration)) {
-            throw new RegistrationNonExistent(id_Registration);
-        }
+    public void deleteRegistration(UUID id_Registration) throws EventNonExistant {
+        getRegistrationById(id_Registration);
         RegistrationRepository.deleteById(id_Registration);
     }
 
@@ -65,7 +71,7 @@ public class RegistrationServiceImpl implements RegistrationServices {
     }
 
     @Override
-    public Registration getRegistrationById(UUID id_Registration) {
+    public Registration getRegistrationById(UUID id_Registration) throws EventNonExistant {
         return RegistrationRepository.findById(id_Registration).orElseThrow(()-> new RegistrationNonExistent(id_Registration));
     }
 }

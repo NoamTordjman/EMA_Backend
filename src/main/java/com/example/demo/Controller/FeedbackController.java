@@ -4,6 +4,9 @@ import com.example.demo.DTO.FeedbackDTOCreate;
 import com.example.demo.DTO.FeedbackDTOUpdate;
 import com.example.demo.Feedback;
 import com.example.demo.Services.FeedbackServices;
+import com.example.demo.exception.FeedbackNonExistent;
+import com.example.demo.exception.RegistrationNonExistent;
+import com.example.demo.exception.UserNonExistent;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,18 +30,18 @@ public class FeedbackController {
         this.feedbackService = feedbackService;
     }
 
-    @PostMapping
-    public Feedback createFeedback(@RequestBody FeedbackDTOCreate feedbackDTO) {
+    @PostMapping("/create")
+    public Feedback createFeedback(@RequestBody FeedbackDTOCreate feedbackDTO) throws RegistrationNonExistent {
         return feedbackService.CreateFeedback(feedbackDTO);
     }
 
     @PutMapping("/{id}")
-    public Feedback updateFeedback(@PathVariable UUID id, @RequestBody FeedbackDTOUpdate feedbackDTO) {
+    public Feedback updateFeedback(@PathVariable UUID id, @RequestBody FeedbackDTOUpdate feedbackDTO) throws FeedbackNonExistent {
         return feedbackService.updateFeedback(id, feedbackDTO);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteFeedback(@PathVariable UUID id) {
+    @DeleteMapping("/delete/{id}")
+    public void deleteFeedback(@PathVariable UUID id) throws FeedbackNonExistent {
         feedbackService.deleteFeedback(id);
     }
 
@@ -48,17 +51,13 @@ public class FeedbackController {
     }
 
     @GetMapping("/{id}")
-    public Feedback getFeedbackById(@PathVariable UUID id) {
+    public Feedback getFeedbackById(@PathVariable UUID id)throws FeedbackNonExistent {
         return feedbackService.getFeedbackById(id);
     }
 
     @GetMapping("/users/{userId}")
-    public List<Feedback> getFeedbackByUserId(@PathVariable UUID userId) {
+    public List<Feedback> getFeedbackByUserId(@PathVariable UUID userId) throws UserNonExistent {
         return feedbackService.getFeedbackByUser(userId);
     }
 
-    @GetMapping("creator/{idCreator}")
-    public List<Feedback> getFeedbackByCreatorId(@PathVariable UUID idCreator) {
-        return feedbackService.getFeedbackByIdCreator(idCreator);
-    }
 }

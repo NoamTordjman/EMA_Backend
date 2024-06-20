@@ -5,6 +5,10 @@ import com.example.demo.DTO.RegistrationDTOCreate;
 import com.example.demo.Registration;
 import com.example.demo.Services.Impl.RegistrationServiceImpl;
 import com.example.demo.Services.RegistrationServices;
+import com.example.demo.exception.EventNonExistant;
+import com.example.demo.exception.RegistrationNonExistent;
+import com.example.demo.exception.UserAlreadyRegisteredException;
+import com.example.demo.exception.UserNonExistent;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,15 +32,16 @@ public class RegistrationController {
         this.registrationService = registrationService;
     }
 
-    @PostMapping("/Register")
-    public ResponseEntity<Registration> createRegistration(@RequestBody RegistrationDTOCreate registrationDTO) {
-        //Ajouter exeption sur la verif des 2 id ici
-        return ResponseEntity.ok(registrationService.CreateRegistration(registrationDTO));
+    @PostMapping("/create")
+    public ResponseEntity<Registration> createRegistration(@RequestBody RegistrationDTOCreate registrationDTO) throws UserAlreadyRegisteredException,UserNonExistent,EventNonExistant {
+        Registration reg = registrationService.CreateRegistration(registrationDTO);
+        return ResponseEntity.ok(reg);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteRegistration(@PathVariable UUID id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Boolean> deleteRegistration(@PathVariable UUID id) throws RegistrationNonExistent {
         registrationService.deleteRegistration(id);
+        return ResponseEntity.ok(true);
     }
 
     @GetMapping
@@ -45,8 +50,9 @@ public class RegistrationController {
     }
 
     @GetMapping("/{id}")
-    public Registration getRegistrationById(@PathVariable UUID id) {
-        return registrationService.getRegistrationById(id);
+    public ResponseEntity<Registration> getRegistrationById(@PathVariable UUID id) throws RegistrationNonExistent {
+        Registration reg= registrationService.getRegistrationById(id);
+        return ResponseEntity.ok(reg);
     }
 
 }

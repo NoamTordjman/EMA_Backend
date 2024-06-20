@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserServices {
     }
 
     @Override
-    public User CreateUser(UserDTOCreate UserDTO) {
+    public User CreateUser(UserDTOCreate UserDTO) throws UserNonExistent {
         User user = new User();
         user.setMail(UserDTO.getMail());
         user.setName(UserDTO.getName());
@@ -33,14 +33,14 @@ public class UserServiceImpl implements UserServices {
     }
 
     @Override
-    public void deleteUser(UUID idUser) {
-        User user = repository.findById(idUser).orElseThrow(()-> new UserNonExistent(idUser));
+    public void deleteUser(UUID idUser) throws UserNonExistent {
+        User user = getUserById(idUser);
         repository.deleteById(idUser);
     }
 
     @Override
-    public User updateUser(UserDTOUpdate userDTO) {
-        User user = repository.findById(userDTO.getUserid()).orElseThrow(()-> new UserNonExistent(userDTO.getUserid()));
+    public User updateUser(UserDTOUpdate userDTO) throws UserNonExistent {
+        User user = getUserById(userDTO.getUserid());
         user.setMail(userDTO.getMail());
         return repository.save(user);
     }
@@ -51,13 +51,14 @@ public class UserServiceImpl implements UserServices {
     }
 
     @Override
-    public User getUserById(UUID idUser) {
+    public User getUserById(UUID idUser) throws UserNonExistent {
         return repository.findById(idUser).orElseThrow(()-> new UserNonExistent(idUser));
     }
 
     @Override
     public User Login(String username, String password) {
         return repository.Login(username,password);
+
     }
 
 }

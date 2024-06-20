@@ -5,6 +5,7 @@ import com.example.demo.DTO.UserDTOCreate;
 import com.example.demo.DTO.UserDTOUpdate;
 import com.example.demo.Services.UserServices;
 import com.example.demo.User;
+import com.example.demo.exception.UserNonExistent;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +29,8 @@ public class UserController {
         this.user = user;
     }
 
-    @PostMapping("/Create")
-    public ResponseEntity<User> createUser(@RequestBody UserDTOCreate UserDTO) {
+    @PostMapping("/create")
+    public ResponseEntity<User> createUser(@RequestBody UserDTOCreate UserDTO) throws UserNonExistent {
         return ResponseEntity.ok(user.CreateUser(UserDTO));
     }
 
@@ -39,12 +40,12 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public User UpdateUser(@PathVariable UUID id, @RequestBody UserDTOUpdate UserDTOUpdate) {
+    public User UpdateUser(@PathVariable UUID id, @RequestBody UserDTOUpdate UserDTOUpdate) throws UserNonExistent {
         return user.updateUser(UserDTOUpdate);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void DeleteUser(@PathVariable UUID id) {
+    public void DeleteUser(@PathVariable UUID id) throws UserNonExistent {
         user.deleteUser(id);
     }
 
