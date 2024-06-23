@@ -45,7 +45,7 @@ public class FeedbackController {
         feedbackService.deleteFeedback(id);
     }
 
-    @GetMapping
+    @GetMapping("/getall")
     public List<Feedback> getAllFeedbacks() {
         return feedbackService.getAllFeedback();
     }

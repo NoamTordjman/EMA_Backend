@@ -44,7 +44,7 @@ public class RegistrationController {
         return ResponseEntity.ok(true);
     }
 
-    @GetMapping
+    @GetMapping(("/getall"))
     public List<Registration> getAllRegistrations() {
         return registrationService.getAllRegistrations();
     }
@@ -53,6 +53,11 @@ public class RegistrationController {
     public ResponseEntity<Registration> getRegistrationById(@PathVariable UUID id) throws RegistrationNonExistent {
         Registration reg= registrationService.getRegistrationById(id);
         return ResponseEntity.ok(reg);
+    }
+
+    @GetMapping(("/getallbyuserid/{id_user}"))
+    public List<Registration> getAllRegistrations(@PathVariable UUID id_user) throws UserNonExistent {
+        return registrationService.getRegistrationByUserId(id_user);
     }
 
 }

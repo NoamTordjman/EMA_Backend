@@ -36,9 +36,14 @@ public class  EventController {
         this.event = event;
     }
 
-    @GetMapping
+    @GetMapping("/getall")
     public List<Event> getAllEvents() {
         return event.getAllEvents();
+    }
+
+    @GetMapping("/getbyidcreator/{id}")
+    public List<Event> getAllEvents(@PathVariable UUID id) {
+        return event.getEventByIdCreator(id);
     }
 
     @PostMapping("/create")

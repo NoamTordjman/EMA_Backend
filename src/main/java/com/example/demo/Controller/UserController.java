@@ -34,10 +34,16 @@ public class UserController {
         return ResponseEntity.ok(user.CreateUser(UserDTO));
     }
 
-    @GetMapping
+    @GetMapping("/getall")
     public List<User> getAllUsers() {
         return user.getAllUsers();
     }
+
+    @GetMapping("/{id_user}")
+    public User getAllUsers(@PathVariable UUID id_user) throws UserNonExistent{
+        return user.getUserById(id_user);
+    }
+
 
     @PutMapping("/update/{id}")
     public User UpdateUser(@PathVariable UUID id, @RequestBody UserDTOUpdate UserDTOUpdate) throws UserNonExistent {
