@@ -28,7 +28,17 @@ public class GlobalDefaultExceptionHandler {
         logger.warn("[Existing Name] {}",  ex.getMessage());
         return ResponseEntity.status(402).body(ex.getMessage());
     }
+
+    @ExceptionHandler(
+            {UserAlreadyRegisteredException.class})
+    public ResponseEntity<String> handleUserAlreadyRegisteredException(UserAlreadyRegisteredException ex) {
+        logger.warn("[User Already Registered] {}",  ex.getMessage());
+        return ResponseEntity.status(409).body(ex.getMessage());
     }
+
+    }
+
+
 
 
 

@@ -33,7 +33,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Registration> createRegistration(@RequestBody RegistrationDTOCreate registrationDTO) throws UserAlreadyRegisteredException,UserNonExistent,EventNonExistant {
+    public ResponseEntity<Registration> createRegistration(@RequestBody RegistrationDTOCreate registrationDTO) throws UserAlreadyRegisteredException,UserAlreadyRegisteredException,UserNonExistent,EventNonExistant {
         Registration reg = registrationService.CreateRegistration(registrationDTO);
         return ResponseEntity.ok(reg);
     }

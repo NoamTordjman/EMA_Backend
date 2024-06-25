@@ -55,7 +55,7 @@ public class FeedbackController {
         return feedbackService.getFeedbackById(id);
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/userid/{userId}")
     public List<Feedback> getFeedbackByUserId(@PathVariable UUID userId) throws UserNonExistent {
         return feedbackService.getFeedbackByUser(userId);
     }

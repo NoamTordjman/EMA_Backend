@@ -14,7 +14,7 @@ public interface RegistrationServices {
 
     List<Registration> getRegistrationByUserId(UUID id_user) throws EventNonExistant;
 
-    Registration CreateRegistration(RegistrationDTOCreate registration) throws UserAlreadyRegisteredException,UserNonExistent,EventNonExistant;
+    Registration CreateRegistration(RegistrationDTOCreate registration) throws UserAlreadyRegisteredException,UserAlreadyRegisteredException,UserNonExistent,EventNonExistant;
     void deleteRegistration(UUID id_Registration) throws RegistrationNonExistent;
     List<Registration> getAllRegistrations();
     Registration getRegistrationById(UUID id_Registration) throws RegistrationNonExistent;

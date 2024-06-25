@@ -2,6 +2,7 @@ package com.example.demo;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -18,8 +19,11 @@ public class Registration {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "id_event")
+    @JoinColumn(name = "id_event",nullable = false)
     private Event event;
+
+    @OneToMany(mappedBy = "registration", cascade = CascadeType.REMOVE)
+    private Set<Feedback> registrationSet;
 
     public Registration() {}
 

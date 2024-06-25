@@ -24,6 +24,8 @@ public class Feedback {
     @Column(name = "rating")
     private int rating;
 
+
+
     public Feedback(){}
 
     public Feedback(UUID id_feedback, String description, Registration registration, int rating) {

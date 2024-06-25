@@ -24,11 +24,13 @@ public class RegistrationServiceImpl implements RegistrationServices {
     private final RegistrationRepository RegistrationRepository;
     private final UserServices UserService;
     private final EventRepository EventRepository;
+    private final RegistrationRepository registrationRepository;
 
     public RegistrationServiceImpl(com.example.demo.Repository.RegistrationRepository registrationRepository, UserServices userService, EventRepository eventRepository) {
         RegistrationRepository = registrationRepository;
         UserService = userService;
         EventRepository = eventRepository;
+        this.registrationRepository = registrationRepository;
     }
 
 
@@ -43,10 +45,14 @@ public class RegistrationServiceImpl implements RegistrationServices {
 
 
     @Override
-    public Registration CreateRegistration(RegistrationDTOCreate registrationDTO) throws UserAlreadyRegisteredException,UserNonExistent,EventNonExistant{
+    public Registration CreateRegistration(RegistrationDTOCreate registrationDTO) throws UserAlreadyRegisteredException,UserAlreadyRegisteredException,UserNonExistent,EventNonExistant{
+
+
         User user = UserService.getUserById(registrationDTO.getUserId());
         Event event = EventRepository.findById(registrationDTO.getEventId()).orElseThrow(()->new EventNonExistant(registrationDTO.getUserId()));
-
+        if (registrationRepository.existsByUserAndEvent(user,event)){
+            throw new UserAlreadyRegisteredException(registrationDTO.getUserId());
+        };
         List<Registration> allRegistration = RegistrationRepository.findAll();
         for(Registration r : allRegistration){
             if((r.getEvent().getIdEvent() == event.getIdEvent()) && (r.getUser().getId() == user.getId())) {

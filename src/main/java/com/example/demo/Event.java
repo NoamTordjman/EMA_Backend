@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -40,10 +41,13 @@ public class Event {
     @JoinColumn(name="id_creator")
     private User idCreator;
 
+    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)
+    private Set<Registration> registrationSet;
+
     public Event() {
     }
 
-    public Event(String title, String description, LocalDateTime dateBegining, String eventStatus, LocalDateTime date_end, String location, User idCreator) {
+    public Event(String title, String description, LocalDateTime dateBegining, String eventStatus, LocalDateTime date_end, String location, User idCreator, Set<Registration> registrationSet) {
         this.title = title;
         this.description = description;
         this.dateBegining = dateBegining;
@@ -51,8 +55,7 @@ public class Event {
         this.date_end = date_end;
         this.location = location;
         this.idCreator = idCreator;
-
-        //Id event !!!!!
+        this.registrationSet = registrationSet;
     }
 
     public void setIdEvent(UUID idEvent) {

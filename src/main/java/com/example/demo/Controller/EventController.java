@@ -9,14 +9,11 @@ import com.example.demo.Services.EventServices;
 import com.example.demo.exception.EventNonExistant;
 import com.example.demo.exception.RegistrationNonExistent;
 import com.example.demo.exception.UserNonExistent;
-import jdk.jfr.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -62,11 +59,11 @@ public class  EventController {
     }
 
     @GetMapping("/getByFilter")
-    public List<Event> searchEvents(@RequestParam(required = false) LocalDateTime date,
+    public List<Event> searchEvents(@RequestParam(required = false) LocalDateTime StartDate,
                                     @RequestParam(required = false) String location,
                                     @RequestParam(required = false) UUID idCreator) {
         EventFilterDTO criteria = new EventFilterDTO();
-        criteria.setDate(date);
+        criteria.setDate_start(StartDate.toLocalDate().atStartOfDay());
         criteria.setLocation(location);
         criteria.setIdCreator(idCreator);
         return event.searchEvents(criteria);

@@ -14,8 +14,8 @@ public class EventSpecification {
         return (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            if(criteria.getDate() != null){
-                LocalDateTime date = criteria.getDate();
+            if(criteria.getDate_start() != null){
+                LocalDateTime date = criteria.getDate_start();
                 predicates.add(criteriaBuilder.equal(root.get("dateBegining"), date));
             }
 
