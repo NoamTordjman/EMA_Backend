@@ -10,9 +10,11 @@ import com.example.demo.exception.EventNonExistant;
 import com.example.demo.exception.RegistrationNonExistent;
 import com.example.demo.exception.UserNonExistent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -59,15 +61,20 @@ public class  EventController {
     }
 
     @GetMapping("/getByFilter")
-    public List<Event> searchEvents(@RequestParam(required = false) LocalDateTime StartDate,
-                                    @RequestParam(required = false) String location,
-                                    @RequestParam(required = false) UUID idCreator) {
+    public List<Event> searchEvents(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) UUID idCreator) {
         EventFilterDTO criteria = new EventFilterDTO();
-        criteria.setDate_start(StartDate.toLocalDate().atStartOfDay());
+        if (startDate != null) {
+            criteria.setDate_start(startDate.atStartOfDay());
+        }
         criteria.setLocation(location);
         criteria.setIdCreator(idCreator);
         return event.searchEvents(criteria);
     }
+
+
 
     @GetMapping("/members/{memberId}")
     public Set<Event> getEventByMember (@PathVariable UUID memberId) throws UserNonExistent, RegistrationNonExistent {
