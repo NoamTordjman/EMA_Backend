@@ -47,6 +47,9 @@ public class  EventController {
 
     @PostMapping("/create")
     public Event CreateEvent(@RequestBody EventDTOCreate EventDTOCreate) {
+        if(EventDTOCreate.getDate_end()==null){
+            return null;
+        }
         return event.CreateEvent(EventDTOCreate);
     }
 

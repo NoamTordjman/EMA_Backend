@@ -4,11 +4,13 @@ import com.example.demo.DTO.FeedbackDTOCreate;
 import com.example.demo.DTO.FeedbackDTOUpdate;
 import com.example.demo.Feedback;
 import com.example.demo.Services.FeedbackServices;
+import com.example.demo.exception.EventNonExistant;
 import com.example.demo.exception.FeedbackNonExistent;
 import com.example.demo.exception.RegistrationNonExistent;
 import com.example.demo.exception.UserNonExistent;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -58,6 +60,12 @@ public class FeedbackController {
     @GetMapping("/userid/{userId}")
     public List<Feedback> getFeedbackByUserId(@PathVariable UUID userId) throws UserNonExistent {
         return feedbackService.getFeedbackByUser(userId);
+    }
+
+    @GetMapping("/getbyeventid/{event_id}")
+    public ResponseEntity<List<Feedback>> getFeedbackbyevent(@PathVariable UUID event_id) throws EventNonExistant{
+        List<Feedback> list=feedbackService.getFeedbackByEvent(event_id);
+        return ResponseEntity.ok(list);
     }
 
 }

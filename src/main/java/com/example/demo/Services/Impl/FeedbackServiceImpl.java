@@ -23,13 +23,14 @@ public class FeedbackServiceImpl implements FeedbackServices {
     private final FeedbackRepository FeedbackRepository;
     private final RegistrationServices RegistrationService;
     private final UserServices UserService;
+    private final EventServices EventService;
 
 
-    public FeedbackServiceImpl(FeedbackRepository feedbackRepository, RegistrationServices registrationService, UserServices userService) {
+    public FeedbackServiceImpl(FeedbackRepository feedbackRepository, RegistrationServices registrationService, UserServices userService, EventServices eventService) {
         FeedbackRepository = feedbackRepository;
         RegistrationService = registrationService;
         UserService = userService;
-
+        EventService = eventService;
     }
 
     @Override
@@ -79,6 +80,12 @@ public class FeedbackServiceImpl implements FeedbackServices {
         return FeedbackRepository.findByRegistrationIn(registrations);
     }
 
+    @Override
+    public List<Feedback> getFeedbackByEvent(UUID eventId) throws EventNonExistant {
+        Event event=EventService.getEventById(eventId);
+        System.out.println(event);
+        return FeedbackRepository.findByEvent(event);
+    }
 
 
 }
