@@ -68,12 +68,20 @@ public class  EventController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) String location,
             @RequestParam(required = false) UUID idCreator) {
+
+        // Log to check received parameters
+        System.out.println("Received parameters: startDate=" + startDate + ", location=" + location + ", idCreator=" + idCreator);
+
         EventFilterDTO criteria = new EventFilterDTO();
         if (startDate != null) {
             criteria.setDate_start(startDate.atStartOfDay());
         }
         criteria.setLocation(location);
         criteria.setIdCreator(idCreator);
+
+        // Log to check criteria
+        System.out.println("Search criteria: " + criteria);
+
         return event.searchEvents(criteria);
     }
 
