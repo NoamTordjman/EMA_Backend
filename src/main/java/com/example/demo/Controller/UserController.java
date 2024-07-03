@@ -14,17 +14,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-
-
 @RestController
 @Tag(
-        name="Users Controller API",
+        name = "Users Controller API",
         description = "Permit to control the Users"
 )
 @RequestMapping("/v1/Users")
 public class UserController {
 
     private final UserServices user;
+
     public UserController(UserServices user) {
         this.user = user;
     }
@@ -35,33 +34,33 @@ public class UserController {
     }
 
     @GetMapping("/getall")
-    public List<User> getAllUsers() {
-        return user.getAllUsers();
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(user.getAllUsers());
     }
 
     @GetMapping("/{id_user}")
-    public User getAllUsers(@PathVariable UUID id_user) throws UserNonExistent{
-        return user.getUserById(id_user);
+    public ResponseEntity<User> getUserById(@PathVariable UUID id_user) throws UserNonExistent {
+        return ResponseEntity.ok(user.getUserById(id_user));
     }
 
-
     @PutMapping("/update/{id}")
-    public User UpdateUser(@PathVariable UUID id, @RequestBody UserDTOUpdate UserDTOUpdate) throws UserNonExistent {
-        return user.updateUser(UserDTOUpdate);
+    public ResponseEntity<User> updateUser(@PathVariable UUID id, @RequestBody UserDTOUpdate UserDTOUpdate) throws UserNonExistent {
+        return ResponseEntity.ok(user.updateUser(UserDTOUpdate));
     }
 
     @DeleteMapping("/delete/{id}")
-    public void DeleteUser(@PathVariable UUID id) throws UserNonExistent {
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) throws UserNonExistent {
         user.deleteUser(id);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/Login")
-    public ResponseEntity<User> Log(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<User> log(@RequestBody LoginRequest loginRequest) {
         User u = user.Login(loginRequest.getUsername(), loginRequest.getPassword());
         if (u != null) {
             return ResponseEntity.ok(u);
         } else {
             return ResponseEntity.status(399).body(null);
-
-        }}
+        }
+    }
 }

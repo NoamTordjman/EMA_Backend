@@ -1,9 +1,7 @@
 package com.example.demo.Controller;
 
-
 import com.example.demo.DTO.RegistrationDTOCreate;
 import com.example.demo.Registration;
-import com.example.demo.Services.Impl.RegistrationServiceImpl;
 import com.example.demo.Services.RegistrationServices;
 import com.example.demo.exception.EventNonExistant;
 import com.example.demo.exception.RegistrationNonExistent;
@@ -19,7 +17,7 @@ import java.util.UUID;
 
 @RestController
 @Tag(
-        name="Registration Controller API",
+        name = "Registration Controller API",
         description = "Permit to control the Registration"
 )
 @RequestMapping("/v1/Registration")
@@ -33,7 +31,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Registration> createRegistration(@RequestBody RegistrationDTOCreate registrationDTO) throws UserAlreadyRegisteredException,UserAlreadyRegisteredException,UserNonExistent,EventNonExistant {
+    public ResponseEntity<Registration> createRegistration(@RequestBody RegistrationDTOCreate registrationDTO) throws UserAlreadyRegisteredException, UserNonExistent, EventNonExistant {
         Registration reg = registrationService.CreateRegistration(registrationDTO);
         return ResponseEntity.ok(reg);
     }
@@ -44,20 +42,19 @@ public class RegistrationController {
         return ResponseEntity.ok(true);
     }
 
-    @GetMapping(("/getall"))
-    public List<Registration> getAllRegistrations() {
-        return registrationService.getAllRegistrations();
+    @GetMapping("/getall")
+    public ResponseEntity<List<Registration>> getAllRegistrations() {
+        return ResponseEntity.ok(registrationService.getAllRegistrations());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Registration> getRegistrationById(@PathVariable UUID id) throws RegistrationNonExistent {
-        Registration reg= registrationService.getRegistrationById(id);
+        Registration reg = registrationService.getRegistrationById(id);
         return ResponseEntity.ok(reg);
     }
 
-    @GetMapping(("/getallbyuserid/{id_user}"))
-    public List<Registration> getAllRegistrations(@PathVariable UUID id_user) throws UserNonExistent {
-        return registrationService.getRegistrationByUserId(id_user);
+    @GetMapping("/getallbyuserid/{id_user}")
+    public ResponseEntity<List<Registration>> getAllRegistrationsByUserId(@PathVariable UUID id_user) throws UserNonExistent {
+        return ResponseEntity.ok(registrationService.getRegistrationByUserId(id_user));
     }
-
 }
